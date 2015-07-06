@@ -1,0 +1,29 @@
+{% extends "main.html" %}
+
+{% block content %}
+<div class="myaccount">
+    <h2>{{me.name}}</h2>
+
+    <img class="img-circle" src="{{me.picture}}">
+
+
+    <div class="m1">
+        <form action="{{url_for('disconnect_view')}}" method="post">
+            <input type="hidden" value="{{state}}" name="csrf">
+            <input type="submit" class="btn btn-danger" value="Disconnect from {{provider}}">
+        </form>
+    </div>
+    
+    <a href="{{url_for('deleteuser_view')}}" class="btn btn-danger m1">Delete Account</a> 
+
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+    $(".btn").click(function(){
+        console.log("woop");
+        $("#loading").show();
+    })
+</script>
+{% endblock %}

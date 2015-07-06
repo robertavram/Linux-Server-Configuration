@@ -1,0 +1,75 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<div class="update_form">
+    <form  enctype="multipart/form-data" action="{{url_for('itemupdate_view',category=my_item.category, item_id=my_item.id)}}" method="post">
+        <input type="hidden" name="item_id" value="my_item.id">
+        <input type="hidden" name="csrf" value={{state}}>
+        
+        <div class="single-item">
+            <p>Update this item:</p>
+            <div class="form-item-name">
+                <input type="text" value="{{my_item.name}}" class="form-control" name="name" placeholder="Item Name" maxlength="50" pattern=".{3,50}"  required title="3 char minimum, 50 char maximum">
+            </div>
+            <div class="item-cat form-select">
+                <select class="form-control" name="category">
+                    {% for category in categories %}
+                    <option value="{{category}}" {% if category == my_category %} selected {% endif %}>{{category}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% if my_item.picture %}
+                <div class="add-picture" id="img_place" style="background-image: url('/img/{{my_item.picture}}');">
+                    <p><span style="font-weight:bold; background-color:#fff;">Change Picture:</span></p>
+                {% else %}
+                <div class="add-picture" id="img_place">
+                    <p>Add picture: </p>
+                {% endif %}
+                <span class="btn btn-default btn-file">Browse Image<input id="imgInp" type="file" name="picture"></span>
+            </div>
+
+            <div class="form-item-link">
+                <input type="url" title="Url needs to start with http:// or https://" class="form-control" name='link' pattern="https?://.+" placeholder="http://www.link_to_your.post" value="{{my_item.link}}">
+            </div>
+            <div class="form-item-description"> <textarea maxlength="1000" rows="5" required class="form-control" name="description">{{my_item.description}}</textarea></div>
+            <a href="/" class="btn btn-danger">Cancel</a> &nbsp; &nbsp;<input class="btn btn-success" type="submit" value="Update!">
+
+        </div>
+        
+        
+    </form>
+
+</div>
+
+
+{% endblock %}
+    
+    
+{% block scripts %}
+<script>
+    /*Source : http://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded 
+        Modified to fit in 4MB */
+    function readURL(input) {
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            console.log(e.total)
+            if (e.total > (4*(Math.pow(1024,2)))){
+                window.alert("the picture you are trying to upload is larger than the 4mb limit");
+            }
+            $('#img_place').css('background-image', 'url('+e.target.result+')');
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+    }
+
+    $("#imgInp").change(function(){
+        readURL(this);
+    });
+    
+</script>
+{% endblock %}

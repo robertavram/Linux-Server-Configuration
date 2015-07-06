@@ -1,0 +1,16 @@
+{% extends "main.html" %}
+
+{% block content %}
+<div class="" style="max-width:500px; text-align: center; margin: 0 auto;">
+    <p style="font-size:1.5em; font-weight:bold;">{{user_info['name']}}... <br>Are you sure you want to delete your account?</p> 
+    <p>This will also delete all of the posts you've posted and they cannot be recovered!</p>
+
+    <form action="{{url_for('deleteuser_view')}}" method="post">
+        <input type="hidden" value="{{state}}"  name="csrf">
+        <input type="submit" class="btn btn-danger" value="Delete My Account"> &nbsp;<a href="/me" class="btn btn-info">Go back to Safety.</a>
+    </form>
+</div>
+    
+
+
+{% endblock %}

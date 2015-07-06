@@ -1,0 +1,35 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<div class="categories">
+{% for category in categories %}
+   <div class="col-xs-4 col-sm-3 col-md-2 category-btn">
+    <a class="btn btn-default btn-block {% if category == my_category %}active{%endif%}" href="{{url_for('category_view', category = category)}}">{{category}}</a>
+   </div>
+{% endfor %}
+</div>
+<div style="clear:both"></div>
+
+<div class="single-item">
+    <h3>{{my_item.name}}:</h3>
+    <div class="item-cat">in {{my_item.category}}</div>
+    <div class="item-owner-name">by {{owner.name}}</div>
+    {% if my_item.picture %}
+    <img src="/img/{{my_item.picture}}">
+    {% endif %}
+    {% if my_item.link %}
+    <div class="item-link"><a target="_blank" href="{{my_item.link}}">Go to blog post!</a></div>
+    {% endif %}
+    <div class="single-item-description"> {{my_item.description}} </div>
+    <div class="item-updated-on"> on: {{my_item.updated_on.date()}} </div>
+    {% if my_item.user_id == user_info.uid %}
+        <a href="{{url_for('itemdelete_view', category=my_item.category, item_id=my_item.id)}}">Delete</a>
+        |
+        <a href="{{url_for('itemupdate_view', category=my_item.category, item_id=my_item.id)}}">Edit</a>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+{% for category in categories %}
+
+   <div class="col-xs-4 col-sm-3 col-md-2 category-btn">
+    <a class="btn btn-default btn-block {% if category == my_category %}active{%endif%}" href="{{url_for('category_view', category = category)}}">{{category}}</a>
+   </div>
+{% endfor %}
+
+<div style="clear:both"></div>
+
+<div class="sub-title-1">{{my_category}}:</div>
+
+{% include "render_items.html" %}
+
+
+
+{% endblock %}

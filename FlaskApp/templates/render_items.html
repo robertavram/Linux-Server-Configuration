@@ -1,0 +1,46 @@
+{% if not items %}
+<div style="text-align:center;">
+    <p style="font-size:1.5em;">Sorry, no content here yet!</p>
+    <br>
+    <br>
+    <a href="{{url_for('additem_view')}}" class="btn btn-lg btn-info">Add an item!</a>
+</div>
+{% endif %}
+
+{% for item in items %}
+    <div class="item col-sm-4">
+        
+        {% if item.picture %}
+        <div class="row">
+            <div class="col-sm-6">
+                <h4><a href="{{url_for('item_view', category=item.category, item_id=item.id)}}">{{item.name}}</a></h4>
+                <p class="item-cat">in  <a style="color:inherit;" href="{{url_for('category_view', category=item.category)}}">{{item.category}}</a></p>
+                <p class="item-owner-name">by <a style="color:inherit;" href="{{url_for('user_view', uid=item.user_id)}}">{{item.uname}}</a></p>
+            </div>
+            <div class="col-sm-6"><a href="{{url_for('item_view', category=item.category, item_id=item.id)}}"><img src="/img/{{item.picture}}"></a></div>
+        </div>
+        {% else %}
+        <div class="item_no_pic">
+            <h4><a href="{{url_for('item_view', category=item.category, item_id=item.id)}}">{{item.name}}</a></h4>
+            <p class="item-cat">in {{item.category}}</p>
+            <p class="item-owner-name">by {{item.uname}}</p>
+        </div>
+        {% endif %}
+        {% if item.description|length > 150 %}
+        <div class="item-description"> {{item.description[0:150]}} <div class="item-description-overflow"></div></div>
+        <div style="text-align:right; width:100%;"><a href="{{url_for('item_view', category=item.category, item_id=item.id)}}">read more</a></div>
+        {% else %}
+        <div class="item-description">{{item.description}}</div>
+        {% endif %}
+        <div>
+            {% if item.user_id == user_info.uid %}
+                <a href="{{url_for('itemdelete_view',category=item.category, item_id=item.id)}}">Delete</a>
+                |
+                <a href="{{url_for('itemupdate_view',category=item.category, item_id=item.id)}}">Edit</a>
+            {% endif %}
+        </div>
+    </div>
+    {% if loop.index%3 == 0 %}
+        <div class="separator"></div>
+    {% endif %}
+{% endfor %}

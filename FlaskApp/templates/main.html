@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/css/main.css" type="text/css">
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+</head>
+    
+    
+<body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <p class="navbar-brand">FlutterHub</a>
+          <p class="navbar-text hidden-sm hidden-xs">Fashion Blogger's Hub</p>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> 
+          <a href="/" class="btn btn-default navbar-btn navbar-left">Home</a>
+          <ul class="nav navbar-nav navbar-right">
+            {% if user_info.name %}
+                <p class="navbar-text">Hi there <a href="{{url_for('myaccount_view')}}">{{user_info.name}}</a></p>
+                <li ><a  href="{{url_for('logout_view')}}">Logout</a></li>
+                <li><a href="{{url_for('additem_view')}}">Add Item</a></li>
+                {% else %}
+                <li><a href="{{url_for('login_view')}}">Login</a></div>
+            {% endif %}
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <div class='flash'>
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
+            {% for fcategory, message in messages %}
+            <p class="{{fcategory}}"><strong>{{ message }}</strong></p> 
+            {% endfor %}
+        {% endif %} {% endwith %}
+    </div>
+    
+    
+	<div class="container">{% block content %} {% endblock %}</div>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

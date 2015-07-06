@@ -1,0 +1,73 @@
+{% extends "main.html" %}
+
+{% block content %}
+{% if user_info.name %}
+<a href="/items/add">Add new Item</a>
+{% else %}
+<div>You are not logged in: <a href="/login">Login</a></div>
+{% endif %}
+
+<div>
+    
+{% for item in items %}
+    <div>{{item.name}} | {{item.uname}} | {{item.category}} | {{item.id}} | {{item.updated_on}} | {{item.picture}}</div>
+    {% if item.user_id == user_info.uid %}
+    | mine
+    {% endif %}
+    {% if item.picture %}
+        <img src="/img/{{item.picture}}">
+    {% endif %}
+    
+{% endfor %}
+</div>
+
+<br>
+<br>
+Users:
+
+<ul>
+    {% for user in users %}
+        <li> {{user.name}} | {{user.id}} | {{user.items}}</li>
+        <ul>
+            {% for item in user.items %}
+            <li> {{item.name}} | {{item.category}}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</ul>
+
+<br>
+<br>
+delete Item
+<form action="/items/delete" method="post">
+    <input type="text" name="item_id">
+    <input type="submit">
+    <input type="hidden" name="csrf" value={{state}}>
+</form>
+<br>
+Update item
+<form action="/items/update" method="post">
+    <input type="text" name="item_id">
+    <input type="text" name="name">
+    <input type="hidden" name="csrf" value={{state}}>
+    <input type="submit">
+</form>
+<br>
+<!--
+<Br>
+<form action="/imgupload", method="post" enctype="multipart/form-data">
+    <input type="text" name="link">
+    <input type="file" name="img_file">
+    <input type="submit">
+</form>
+-->
+
+{% endblock %}
+
+
+
+
+
+
+
+

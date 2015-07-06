@@ -1,0 +1,19 @@
+{% extends "main.html" %}
+
+{% block content %}
+<div id="loading" style="display:none;"><div class="spinner"><p style="margin-left:-50%;font-size: 1.5em; font-weight:bold;">Loading...</p></div></div>
+<div style="max-width: 500px; margin:0 auto;">
+    <a class="btn btn-lg btn-block fb_login" href="/auth/facebook?state={{state}}">Facebook login</a>
+    <br>
+    <a class="btn btn-lg btn-block g_login" href="/auth/google?state={{state}}">Google Login</a>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+    $(".btn").click(function(){
+        console.log("woop");
+        $("#loading").show();
+    })
+</script>
+{% endblock %}
