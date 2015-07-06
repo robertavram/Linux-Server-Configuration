@@ -1,5 +1,6 @@
 # assumes openssh already installed
 # assume git installed and these scripts are source is cloned in /src/
+# run sudo su before executing this script
 
 # update all the packages
 apt-get update
@@ -7,8 +8,18 @@ apt-get update
 # upgrade all
 apt-get upgrade
 
+# let packages auto-update
+apt-get install unattended-upgrades
+
+# enable auto-update
+dpkg-reconfigure -plow unattended-upgrades
+
+# configure time-zone data
+dpkg-reconfigure tzdata
+
+
 # add a new user grader
-adduser --disabled-password --gecos "" grader
+adduser --gecos "" grader
 
 # make a copy of the sudoers file to the temp /etc/sudoers.tmp
 cp /etc/sudoers /etc/sudoers.tmp
@@ -17,7 +28,7 @@ cp /etc/sudoers /etc/sudoers.tmp
 # erase the root   ALL=(ALL) ALL
 word='root[[:space:]]*ALL=(ALL:ALL)[[:space:]]ALL'
 # Replace it with grader
-rep="grader     ALL=(ALL:ALL) ALL"
+rep="grader     ALL=(ALL:ALL) NOPASSWD: ALL"
 
 sed -i "s/${word}/${rep}/" /etc/sudoers.tmp
 

@@ -2,7 +2,7 @@
 cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
 
 #change port from 22 to 2200
-word='/<Port[[:space:]]22/>'
+word='Port[[:space:]]22'
 rep='Port 2200'
 sed -i "s/${word}/${rep}/g" /etc/ssh/sshd_config
 
@@ -34,10 +34,10 @@ ufw allow 80/tcp
 ufw enable
 
 # install ntp
-apt-get install ntp
+apt-get install -y ntp
 
 # install fail2ban
-apt-get install fail2ban
+apt-get install -y fail2ban
 
 # make a conf backup
 cp /etc/fail2ban/jail.conf /etc/fail2ban/jailconf.local
@@ -64,13 +64,13 @@ sed -i "/\[ssh\]/{N
 sed -i "s/\(action_)/(action_mwl)/" /etc/fail2ban/jail.local
 
 # install sendmail
-apt-get install sendmail
+apt-get install -y sendmail
 
 
 
 # install docker
 # make sure wget is installed
-apt-get install wget
+apt-get install -y wget
 
 # make sure the key is added to apt
 wget -qO- https://get.docker.com/gpg | sudo apt-key add
@@ -90,11 +90,11 @@ wget -qO- https://get.docker.com/ | sh
 # Application
 # build docker image
 docker build -t flutterhub:v1 /src/.
-docker build -t flutterhubDB:v1 /src/db/.
+docker build -t flutterhubdb:v1 /src/db/.
 
 
-docker create -v /dbdata --name dbdata flutterhubDB:v1 /bin/true
-docker run -d --volumes-from dbdata --name db flutterhubDB:v1
+docker create -v /dbdata --name dbdata flutterhubdb:v1 /bin/true
+docker run -d --volumes-from dbdata --name db flutterhubdb:v1
 docker run -d -v /var/log/apache2:/var/log/apache2 -p 80:80 --name web --link db:db flutterhub:v1
 
 # start the application

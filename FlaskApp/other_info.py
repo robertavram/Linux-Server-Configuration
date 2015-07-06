@@ -15,4 +15,4 @@ item_categories = [
     "Sports"]
 
 
-DB_connection = "postgresql://catalog:funnymonkeys@{}:5432/catalog".format(db_container)
+DB_connection = "postgresql://catalog:funnymonkeys@{}/catalog".format(db_container)

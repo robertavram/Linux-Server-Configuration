@@ -37,10 +37,11 @@ VOLUME /var/log/apache2/
 
 WORKDIR /var/www/FlaskApp/FlaskApp
 
-RUN sed -i "s/db_container.*/db_container = '${DB1_PORT_5432_TCP_ADDR}:5432'/" /var/www/FlaskApp/FlaskApp/other_info.py
-RUN sed -i "s|app_files.*|app_files = '${PWD}'|" /var/www/FlaskApp/FlaskApp/other_info.py
 
 EXPOSE 80
 
+COPY ./app-entrypoint.sh /
+RUN chmod +x /app-entrypoint.sh
+ENTRYPOINT ["/app-entrypoint.sh"]
 
-CMD ["service", "apache2", "restart"]
+
