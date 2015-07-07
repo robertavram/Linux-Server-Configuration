@@ -1,27 +1,12 @@
-# make a backup of sshd_config
-cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
 
-#change port from 22 to 2200
-word='Port[[:space:]]22'
-rep='Port 2200'
-sed -i "s/${word}/${rep}/g" /etc/ssh/sshd_config
-
-#make sure not to allow password auth
+# since the rsa key was coppied, make sure not to allow password ssh
 word='#PasswordAuthentication[[:space:]]*yes'
 rep='PasswordAuthentication no'
 sed -i "s/${word}/${rep}/g" /etc/ssh/sshd_config
 
-# add grader to the list of AllowedUsers for ssh
-if grep -q "AllowUsers" /etc/ssh/sshd_config; then
-    word='AllowUsers'
-    rep='AllowUsers grader'
-    sed -i "s/${word}/${rep}/" /etc/ssh/sshd_config
-else 
-    echo "AllowUsers grader" >> /etc/ssh/sshd_config
-fi
 
 # restart ssh
-service sshd restart
+service ssh restart
 
 # configure ufw to only allow
 # 123 udp for ntp
@@ -36,7 +21,7 @@ ufw enable
 # install ntp
 apt-get install -y ntp
 
-# install fail2ban
+# install fail2ban - defense against brute force attacks
 apt-get install -y fail2ban
 
 # make a conf backup
@@ -73,7 +58,7 @@ apt-get install -y sendmail
 apt-get install -y wget
 
 # make sure the key is added to apt
-wget -qO- https://get.docker.com/gpg | sudo apt-key add
+wget -qO- https://get.docker.com/gpg | apt-key add
 
 # Get the latest Docker package
 wget -qO- https://get.docker.com/ | sh
@@ -93,9 +78,10 @@ docker build -t flutterhub:v1 /src/.
 docker build -t flutterhubdb:v1 /src/db/.
 
 
-docker create -v /dbdata --name dbdata flutterhubdb:v1 /bin/true
-docker run -d --volumes-from dbdata --name db flutterhubdb:v1
-docker run -d -v /var/log/apache2:/var/log/apache2 -p 80:80 --name web --link db:db flutterhub:v1
+docker create -v /etc/postgresql -v /var/log/postgresql -v /var/lib/postgresql --name dbdata flutterhubdb:v1 /bin/true
+# docker create -v /etc/postgresql -v /var/log/postgresql -v /var/lib/postgresql --name dbdata flutterhubdb:v1 /bin/true
+docker run --restart=always -d --volumes-from dbdata --name db flutterhubdb:v1
+docker run --restart=always -d -v /var/log/apache2:/var/log/apache2 -p 80:80 --name web --link db:db flutterhub:v1
 
 # start the application
 #sudo docker run -d -v /var/log/apache2:/var/log/apache2 -p 80:80 flutterhub:v1
@@ -114,13 +100,24 @@ docker run -d -v /var/log/apache2:/var/log/apache2 -p 80:80 --name web --link db
 #
 #
 # create auto update script
+
+
 # create docker for auto-backup of data to tar
+# $ docker run --rm=true --volumes-from dbdata -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar /dbdata
+# sudo docker run --volumes-from dbdata -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar /var/lib/postgresql/9.3/main/
+# if needed un-tar the backup file in the new container’s data volume.
+# docker run --volumes-from dbdata2 -v $(pwd):/backup ubuntu cd /dbdata && tar xvf /backup/backup.tar
+
+
 # auto system check for app if it's still working
 # 
 
 
 
-
+# system monitoring tools
+apt-get install -y python-pip build-essential python-dev
+pip install Glances
+# pip install PySensors
 
 
 

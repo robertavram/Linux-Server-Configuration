@@ -42,6 +42,6 @@ EXPOSE 80
 
 COPY ./app-entrypoint.sh /
 RUN chmod +x /app-entrypoint.sh
-ENTRYPOINT ["/app-entrypoint.sh"]
+ENTRYPOINT /app-entrypoint.sh
 
 
