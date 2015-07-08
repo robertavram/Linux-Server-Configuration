@@ -69,65 +69,16 @@ wget -qO- https://get.docker.com/gpg | apt-key add
 # Get the latest Docker package
 wget -qO- https://get.docker.com/ | sh
 
-# might have to do this:
-#word='DEFAULT_FORWARD_POLICY="DROP"'
-#rep='DEFAULT_FORWARD_POLICY="ACCEPT"'
-#sed -i "s/${word}/${rep}/" /etc/default/ufw
-#sudo ufw reload
-
-#Postgresql container
-
-
-# Application
-# build docker image
+# build docker images
+# build application image
 docker build -t flutterhub:v1 /src/.
+# build database image
 docker build -t flutterhubdb:v1 /src/db/.
 
-
+# create data volume
 docker create -v /etc/postgresql -v /var/log/postgresql -v /var/lib/postgresql --name dbdata flutterhubdb:v1 /bin/true
+# start database container with the volumes from dbdata
 docker run --restart=always -d --volumes-from dbdata --name db flutterhubdb:v1
+# start application container linked to the database container
+# add the apache log directory as a volume in the container in order to be able to monitor the logs from the host machine
 docker run --restart=always -d -v /var/log/apache2:/var/log/apache2 -p 80:80 --name web --link db:db flutterhub:v1
-
-# start the application
-# sudo docker run -d -v /var/log/apache2:/var/log/apache2 -p 80:80 flutterhub:v1
-
-# when it doesnt autorun
-# sudo docker run -d -it -v /var/log/apache2:/var/log/apache2 -p 80:80 --name web flutterhub:v1
-# sudo docker exec -d web service apache2 restart
-
-# run the db container
-#sudo docker run  -d myps:v2
-
-# start the application and connect it to the db
-# sudo docker run -d -v /var/log/apache2:/var/log/apache2 -p 80:80 --name web --link db:db flutterhub:v1
-
-
-#
-#
-# create auto update script
-
-
-# create docker for auto-backup of data to tar
-# $ docker run --rm=true --volumes-from dbdata -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar /dbdata
-# sudo docker run --volumes-from dbdata -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar /var/lib/postgresql/9.3/main/
-# if needed un-tar the backup file in the new container’s data volume.
-# docker run --volumes-from dbdata2 -v $(pwd):/backup ubuntu cd /dbdata && tar xvf /backup/backup.tar
-
-
-# auto system check for app if it's still working
-# 
-
-
-
-
-
-
-
-
-
-
-
-#cat <<EOT >> greetings.txt
-#AllowUser 
-#line 2
-#EOT
