@@ -23,26 +23,30 @@ adduser --gecos "" grader
 
 # make a copy of the sudoers file to the temp /etc/sudoers.tmp
 cp /etc/sudoers /etc/sudoers.tmp
+# make a backup of the sudoers file
+cp /etc/sudoers /etc/sudoers.bak
 
 # change sudoers file
 # erase the root   ALL=(ALL) ALL
+# we're effectively removing root from sudo doers.
 word='root[[:space:]]*ALL=(ALL:ALL)[[:space:]]ALL'
 # Replace it with grader
 rep="grader     ALL=(ALL:ALL) NOPASSWD: ALL"
-
+# sed to execute this replacement.
 sed -i "s/${word}/${rep}/" /etc/sudoers.tmp
 
 # remove the necessity for password for sudo
 word='%sudo[[:space:]]*ALL=(ALL:ALL)[[:space:]]ALL'
 rep='%sudo ALL=(ALL:ALL) NOPASSWD: ALL'
-
 sed -i "s/${word}/${rep}/g" /etc/sudoers.tmp
 
+# move the sudoers file back
 mv /etc/sudoers.tmp /etc/sudoers
 
 # make the sudoers readonly
 chmod 0444 /etc/sudoers
 
+# change ssh configurations
 # make a backup of sshd_config
 cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
 
