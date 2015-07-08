@@ -55,6 +55,9 @@ sed -i "s/\(action_)/(action_mwl)/" /etc/fail2ban/jail.local
 apt-get install -y sendmail
 
 
+# system monitoring tools
+apt-get install -y python-pip build-essential python-dev
+pip install Glances
 
 # install docker
 # make sure wget is installed
@@ -82,12 +85,11 @@ docker build -t flutterhubdb:v1 /src/db/.
 
 
 docker create -v /etc/postgresql -v /var/log/postgresql -v /var/lib/postgresql --name dbdata flutterhubdb:v1 /bin/true
-# docker create -v /etc/postgresql -v /var/log/postgresql -v /var/lib/postgresql --name dbdata flutterhubdb:v1 /bin/true
 docker run --restart=always -d --volumes-from dbdata --name db flutterhubdb:v1
 docker run --restart=always -d -v /var/log/apache2:/var/log/apache2 -p 80:80 --name web --link db:db flutterhub:v1
 
 # start the application
-#sudo docker run -d -v /var/log/apache2:/var/log/apache2 -p 80:80 flutterhub:v1
+# sudo docker run -d -v /var/log/apache2:/var/log/apache2 -p 80:80 flutterhub:v1
 
 # when it doesnt autorun
 # sudo docker run -d -it -v /var/log/apache2:/var/log/apache2 -p 80:80 --name web flutterhub:v1
@@ -117,10 +119,6 @@ docker run --restart=always -d -v /var/log/apache2:/var/log/apache2 -p 80:80 --n
 
 
 
-# system monitoring tools
-apt-get install -y python-pip build-essential python-dev
-pip install Glances
-# pip install PySensors
 
 
 

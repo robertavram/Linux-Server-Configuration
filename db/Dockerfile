@@ -18,9 +18,9 @@ RUN    /etc/init.d/postgresql start &&\
     
 
 # Adjust PostgreSQL configuration so that remote connections to the
-# database are possible. These connections are only possible from within other docker containers. 
+# database are possible. These connections are only possible from within other docker containers on the same server 
 # The ports are not exposed to the host machine unless specified so whe running the container. 
-# Technically remote connections are imposible to the db
+# Technically outside remote connections are imposible to the db.
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.3/main/pg_hba.conf
 
 # And add ``listen_addresses`` to ``/etc/postgresql/9.3/main/postgresql.conf``

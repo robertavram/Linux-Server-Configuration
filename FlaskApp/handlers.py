@@ -8,7 +8,7 @@ from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
 import requests
 import time
 
-
+import logging
 import json
 import utils
 import urllib
@@ -94,7 +94,7 @@ class GoogleOauth(object):
         ''' intended for google callback, either logs in a existing user or creates a new user and logs them in '''
 
         code = self.request.args.get('code')
-        print "received code of %s " % code
+        logging.info("received code of %s " % code)
 
         try:
             # Upgrade the authorization code into a credentials object
@@ -105,7 +105,7 @@ class GoogleOauth(object):
             credentials = oauth_flow.step2_exchange(code)
 
         except FlowExchangeError as e:
-            print e
+            logging.info(e)
             return self.flash_out(
                 "Failed to upgrade the authorization code.", 401)
 
@@ -123,7 +123,7 @@ class GoogleOauth(object):
                 credentials.id_token['sub'] == stored_gplus_id):
             return self.flash_out('Current user is already logged in.')
 
-        print "#Geting google user info"
+        logging.info("#Geting google user info")
         # Get user info
         u_info = self.google.get_user_info(
             credentials.access_token,
