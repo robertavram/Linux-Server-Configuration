@@ -27,14 +27,17 @@ apt-get install -y fail2ban
 # make a conf backup
 cp /etc/fail2ban/jail.conf /etc/fail2ban/jailconf.local
 
+# set bantime to 1800 sec
 word="bantime[[:space:]]*=[[:space:]][[:digit:]]*"
 rep="bantime = 1800"
 sed -i "s/${word}/${rep}/" /etc/fail2ban/jail.local
 
+# set the email to my email
 word="destemail[[:space:]]*=[[:space:]]root@localhost"
 rep="destemail = robert@ravdev.com"
 sed -i "s/${word}/${rep}/" /etc/fail2ban/jail.local
 
+# set the sender to some recongnizable name
 word="sendername[[:space:]]*=[[:space:]]Fail2Ban"
 rep="sendername = FlutterHub_Server_Fail2Ban"
 sed -i "s/${word}/${rep}/" /etc/fail2ban/jail.local
