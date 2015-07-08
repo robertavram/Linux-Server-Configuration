@@ -195,7 +195,6 @@ class Items(Base):
 
     def add_change_picture(self, dbs, pictureid):
         if self.picture:
-            print self.picture
             Images.delete_by_id(dbs, self.picture)
         self.picture = pictureid
         dbs.add(self)
