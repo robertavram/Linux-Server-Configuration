@@ -2,10 +2,10 @@
 
 
 
-<h2 id="linux-apache-flask-postgres-docker-containers">Linux - Apache - Flask - Postgres - Docker Containers</h2>
+<h2 id="linux-apache-flask-postgresql-docker-containers">Linux - Apache - Flask - Postgresql - Docker Containers</h2>
 
-<p>Script that takes a baseline Linux Server and automates the configuration that secures the system from a number of attack vectors, serves a Postgres database server and an Apache mod-wsgi server. <br>
-The Postgres Database Server is configured to run in a <a href="https://www.docker.com"><strong>Docker</strong></a> container that uses a docker data volume for easy migrations, backups and restores. <br>
+<p>Script that takes a baseline Linux Server and automates the configuration that secures the system from a number of attack vectors, serves a Postgresql database server and an Apache mod-wsgi server. <br>
+The Postgresql Database Server is configured to run in a <a href="https://www.docker.com"><strong>Docker</strong></a> container that uses a docker data volume for easy migrations, backups and restores. <br>
 Th Apache server is dockerized and linked to the Database Server container for a more secure communication style.</p>
 
 <h2 id="table-of-contents">Table of contents</h2>
@@ -95,21 +95,17 @@ Th Apache server is dockerized and linked to the Database Server container for a
 
 
 
-<h4 id="2-install-git">2. Install git:</h4>
+<h4 id="2-install-git">2. Install git</h4>
 
 <blockquote>
   <p>$<code>sudo apt-get install git</code></p>
 </blockquote>
 
-
-
-<h4 id="3-clone-the-repository-into-src">3. Clone the repository into /src:</h4>
+<h4 id="3-clone-the-repository-into-src">3. Clone the repository into /src</h4>
 
 <blockquote>
   <p>$ <code>sudo git clone</code>[your source]  <code>/src</code></p>
 </blockquote>
-
-
 
 <h4 id="4-login-as-root-and-run-s1sh-from-the-shell-directory-cyberciti-1">4.  Login as root and run s1.sh from the “shell” directory <a href="http://www.cyberciti.biz/faq/run-execute-sh-shell-script/">Cyberciti 1</a></h4>
 
@@ -151,7 +147,7 @@ Th Apache server is dockerized and linked to the Database Server container for a
 
 
 
-<h4 id="1-a-new-user-has-been-created-digital-ocean-2">1. A new user has been created <a href="https://www.digitalocean.com/community/tutorials/how-to-add-and-delete-users-on-an-ubuntu-14-04-vps">Digital Ocean 2</a></h4>
+<h4 id="1-create-a-new-user-digital-ocean-2">1. Create a new user <a href="https://www.digitalocean.com/community/tutorials/how-to-add-and-delete-users-on-an-ubuntu-14-04-vps">Digital Ocean 2</a></h4>
 
 <blockquote>
   <p>Add a new user grader</p>
@@ -160,32 +156,32 @@ Th Apache server is dockerized and linked to the Database Server container for a
     <p>$ <code>adduser --gecos "" grader</code></p>
   </blockquote>
   
-  <p>make a copy of the sudoers file to the temp /etc/sudoers.tmp</p>
+  <p>Make a copy of the sudoers file to the temp /etc/sudoers.tmp</p>
   
   <blockquote>
     <p>$<code>cp /etc/sudoers /etc/sudoers.tmp</code></p>
   </blockquote>
   
-  <p>make a backup of the sudoers file</p>
+  <p>Make a backup of the sudoers file</p>
   
   <blockquote>
     <p>$<code>cp /etc/sudoers /etc/sudoers.bak</code></p>
   </blockquote>
   
-  <p>change sudoers file</p>
+  <p>Change sudoers file</p>
   
   <blockquote>
     <p><em>extra:</em> effectively also remove root from sudoers <br>
     $ <code>word='root[[:space:]]*ALL=(ALL:ALL)[[:space:]]ALL'</code></p>
   </blockquote>
   
-  <p>replace it with grader</p>
+  <p>Replace it with grader</p>
   
   <blockquote>
     <p>$ <code>rep="grader     ALL=(ALL:ALL) NOPASSWD: ALL"</code></p>
   </blockquote>
   
-  <p>sed to execute this replacement.</p>
+  <p><em>sed</em> to execute this replacement.</p>
   
   <blockquote>
     <p><code>sed -i "s/${word}/${rep}/" /etc/sudoers.tmp</code></p>
@@ -199,13 +195,13 @@ Th Apache server is dockerized and linked to the Database Server container for a
     $<code>sed -i "s/${word}/${rep}/g" /etc/sudoers.tmp</code></p>
   </blockquote>
   
-  <p>move the sudoers file back</p>
+  <p>Move the sudoers file back</p>
   
   <blockquote>
     <p>$ <code>mv /etc/sudoers.tmp /etc/sudoers</code></p>
   </blockquote>
   
-  <p>make the sudoers readonly <a href="http://www.cyberciti.biz/faq/howto-set-readonly-file-permission-in-linux-unix/">Cyberciti 2</a></p>
+  <p>Make the sudoers readonly <a href="http://www.cyberciti.biz/faq/howto-set-readonly-file-permission-in-linux-unix/">Cyberciti 2</a></p>
   
   <blockquote>
     <p>$ <code>chmod 0444 /etc/sudoers</code></p>
@@ -214,16 +210,14 @@ Th Apache server is dockerized and linked to the Database Server container for a
 
 
 
-<h4 id="2-user-grader-can-sudo-to-root-and-the-password-has-been-set-securely">2. User “grader” can sudo to root and the password has been set securely.</h4>
+<h4 id="2-user-grader-can-sudo-to-root-and-the-password-has-been-set-securely">2. User “grader” can sudo to root and the password has been set securely</h4>
 
-
-
-<h4 id="3-remote-users-other-then-grader-have-been-disabled">3. Remote users other then ‘grader’ have been disabled.</h4>
+<h4 id="3-disallow-everyone-else-but-grader-from-ssh">3. Disallow everyone else but ‘grader’ from ssh</h4>
 
 <blockquote>
   <blockquote>
-    <p>add grader to the list of AllowedUsers for ssh <br>
-    done this by adding AllowUsers grader to sshd_config <a href="https://www.digitalocean.com/community/tutorials/how-to-tune-your-ssh-daemon-configuration-on-a-linux-vps">Digital Ocean 3</a> <br>
+    <p>Add grader to the list of AllowedUsers for ssh <br>
+    Do this by adding AllowUsers grader to sshd_config <a href="https://www.digitalocean.com/community/tutorials/how-to-tune-your-ssh-daemon-configuration-on-a-linux-vps">Digital Ocean 3</a> <br>
     $ <code>if grep -q "AllowUsers" /etc/ssh/sshd_config; then</code> <br>
     $ <code>word='AllowUsers'</code> <br>
     $ <code>rep='AllowUsers grader'</code> <br>
@@ -234,16 +228,14 @@ Th Apache server is dockerized and linked to the Database Server container for a
   </blockquote>
 </blockquote>
 
-
-
 <h2 id="security-app-functionality-monitoring-feedback">Security / App Functionality Monitoring - Feedback</h2>
 
 
 
-<h4 id="1-key-based-ssh-has-been-enforced-unixhelp">1. Key-based ssh has been enforced. <a href="http://unixhelp.ed.ac.uk/CGI/man-cgi?sshd_config">UnixHelp</a></h4>
+<h4 id="1-enforce-key-based-ssh-unixhelp">1. Enforce Key-based ssh  <a href="http://unixhelp.ed.ac.uk/CGI/man-cgi?sshd_config">UnixHelp</a></h4>
 
 <blockquote>
-  <p>changed to PasswordAuthentication = no in sshd_config file</p>
+  <p>Change to PasswordAuthentication = no in sshd_config file</p>
   
   <blockquote>
     <p>$ <code>word='#PasswordAuthentication[[:space:]]*yes'</code> <br>
@@ -252,12 +244,10 @@ Th Apache server is dockerized and linked to the Database Server container for a
   </blockquote>
 </blockquote>
 
-
-
-<h4 id="2-ssh-accessible-over-non-default-port-2200-digital-ocean-3">2. SSH accessible over non-default port 2200. <a href="https://www.digitalocean.com/community/tutorials/how-to-tune-your-ssh-daemon-configuration-on-a-linux-vps">Digital Ocean 3</a></h4>
+<h4 id="2-make-ssh-accessible-over-non-default-port-2200digital-ocean-3">2. Make SSH accessible over non-default port 2200<a href="https://www.digitalocean.com/community/tutorials/how-to-tune-your-ssh-daemon-configuration-on-a-linux-vps">Digital Ocean 3</a></h4>
 
 <blockquote>
-  <p>change port from 22 to 2200 in sshd_config</p>
+  <p>Change port from 22 to 2200 in sshd_config</p>
   
   <blockquote>
     <p>$ <code>word='Port[[:space:]]22'</code> <br>
@@ -266,25 +256,19 @@ Th Apache server is dockerized and linked to the Database Server container for a
   </blockquote>
 </blockquote>
 
-<ol>
-<li>Applications have been updated to the most recent updates. <a href="http://askubuntu.com/questions/94102/what-is-the-difference-between-apt-get-update-and-upgrade">AskUbuntu 2</a> <br>
-
+<h4 id="3-update-applications-to-their-most-recent-updates-recent-updates-askubuntu-2">3. Update applications to their most recent updates recent updates. <a href="http://askubuntu.com/questions/94102/what-is-the-difference-between-apt-get-update-and-upgrade">AskUbuntu 2</a></h4>
 
 <blockquote>
   <blockquote>
-    $ <code>apt-get update</code> <br>
-    $ <code>apt-get upgrade</code></blockquote></blockquote></li>
-    </ol>
-    
-  
+    <p>$ <code>apt-get update</code> <br>
+    $ <code>apt-get upgrade</code></p>
+  </blockquote>
+</blockquote>
 
-
-<h4 id="4-the-firewall-has-been-configured-to-monitor-for-repeated-unsuccessful-attempts-appropriately-bans-attackers-and-provides-automated-security-feedback-digital-ocean-4">4. The firewall has been configured to monitor for repeated unsuccessful attempts, appropriately bans attackers and provides automated security feedback. <a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-fail2ban-on-ubuntu-14-04">Digital Ocean 4</a></h4>
-
-
+<h4 id="4-configure-the-firewall-to-monitor-for-repeated-unsuccessful-attempts-appropriately-ban-attackers-and-provide-automated-security-feedback-digital-ocean-4">4. Configure the firewall to monitor for repeated unsuccessful attempts, appropriately ban attackers and provide automated security feedback. <a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-fail2ban-on-ubuntu-14-04">Digital Ocean 4</a></h4>
 
 <blockquote>
-  <p>change bantime to 1800 sec</p>
+  <p>Change bantime to 1800 sec</p>
   
   <blockquote>
     <p>$ <code>word="bantime[[:space:]]*=[[:space:]][[:digit:]]*"</code> <br>
@@ -292,7 +276,7 @@ Th Apache server is dockerized and linked to the Database Server container for a
     $ <code>sed -i "s/${word}/${rep}/" /etc/fail2ban/jail.local</code></p>
   </blockquote>
   
-  <p>change the email to my email</p>
+  <p>Change the email to my email</p>
   
   <blockquote>
     <p>$ <code>word="destemail[[:space:]]*=[[:space:]]root@localhost"</code> <br>
@@ -300,45 +284,41 @@ Th Apache server is dockerized and linked to the Database Server container for a
     $<code>sed -i "s/${word}/${rep}/" /etc/fail2ban/jail.local</code></p>
   </blockquote>
   
-  <p>change the ssh port in jail.local</p>
+  <p>Change the ssh port in jail.local</p>
   
   <blockquote>
     <p>$ <code>sed -i "/\[ssh\]/{N</code> <br>
     <code>N</code> <br>
     <code>N</code> <br>
     <code>s/\(\[ssh\]\n.*\n.*\)\n.*/\1\nport=2200/}" /etc/fail2ban/jail.local</code> <br>
-    make sure that feedback is provided via email in case of brute force attack attempts <br>
+    Make sure that feedback is provided via email in case of brute force attack attempts <br>
     $ <code>sed -i "s/\(action_)/(action_mwl)/" /etc/fail2ban/jail.local</code> <br>
-    ensure that fail2ban can send the emails <br>
+    Ensure that fail2ban can send the emails <br>
     $ <code>apt-get install -y sendmail</code></p>
   </blockquote>
 </blockquote>
 
-<ol>
-<li>A monitoring software was installed to monitor system availability and status. <a href="http://shinken.readthedocs.org/en/branch-1.4/89_packages/glances.html">Python 1</a> <a href="http://glances.readthedocs.org/en/latest/glances-doc.html#introduction">Readthedocs 2</a> <br>
-
+<p></p><ol> <br>
+<li>Install a server monitoring software to monitor system availability and status. <a href="http://shinken.readthedocs.org/en/branch-1.4/89_packages/glances.html">Python 1</a> <a href="http://glances.readthedocs.org/en/latest/glances-doc.html#introduction">Readthedocs 2</a> <br></li></ol><p></p>
 
 <blockquote>
   <blockquote>
-    $ <code>apt-get install -y python-pip build-essential python-dev</code> <br>
-    $ <code>pip install Glances</code></blockquote></blockquote></li>
-    </ol>
-    
-  
-
+    <p>$ <code>apt-get install -y python-pip build-essential python-dev</code> <br>
+    $ <code>pip install Glances</code>
+    </p>
+  </blockquote>
+</blockquote>
 
 <h2 id="other-application-functionality">Other Application Functionality</h2>
 
 <ol>
-<li><p>Web-server has been <a href="https://www.digitalocean.com/community/tutorials/docker-explained-how-to-containerize-python-web-applications">dockerized (1)</a> for security and portability; configured to serve the provided application and has been configured to automatically restart in case of critical failure.</p></li>
-<li><p>Database Server has been <a href="https://docs.docker.com/examples/postgresql_service/">dockerized (2)</a> for security, portability, has been configured to use a <a href="https://docs.docker.com/userguide/dockervolumes/">data volume</a> for easy migrations, backups and restores.</p>
+<li><p>Web-server is <a href="https://www.digitalocean.com/community/tutorials/docker-explained-how-to-containerize-python-web-applications">dockerized (1)</a> for security and portability; configured to serve the provided application and is configured to automatically restart in case of critical failure.</p></li>
+<li><p>Database Server is <a href="https://docs.docker.com/examples/postgresql_service/">dockerized (2)</a> for security, portability, is configured to use a <a href="https://docs.docker.com/userguide/dockervolumes/">data volume</a> for easy migrations, backups and restores.</p>
 
 <blockquote>
   <p><strong>Note: </strong> <em>Even though it looks like remote connections have been enabled for the database it is important to notice that the database is not actually accessible remotely from any machine unless it is a purposefully <a href="https://docs.docker.com/userguide/dockerlinks/">linked docker container</a>. Technically by dockerizing the database server, another layer of security was added.</em></p>
 </blockquote></li>
 </ol>
-
-
 
 <h2 id="other-security-functionality-configurations">Other Security / Functionality Configurations</h2>
 
@@ -363,15 +343,20 @@ Th Apache server is dockerized and linked to the Database Server container for a
 
 
 
+<h4 id="3-install-unattended-packages-and-configure-to-auto-update">3. Install unattended-packages and configure to auto-update</h4>
+
+<blockquote>
+  <p><code>apt-get install unattended-upgrades</code> <br>
+  <code>dpkg-reconfigure -plow unattended-upgrades</code></p>
+</blockquote>
+
 <h2 id="description-of-the-system">Description of the System</h2>
 
 <p>The system is set up to allow connections only on port 2200 for SSH, 123 for NTP and 80 for HTTP. <br>
 Port 80 is forwarded into the Docker container that runs the Apache server. <br>
-The Apache server container and the Postgres container are built from a <a href="https://docs.docker.com/reference/builder/">Dockerfile</a> that has all the configuration settings.</p>
+The Apache server container and the Postgresql container are built from a <a href="https://docs.docker.com/reference/builder/">Dockerfile</a> that has all the configuration settings.</p>
 
 <p><img src="https://github.com/robertavram/project5/blob/master/system_diag.png?raw=true" alt="system diagram" title=""></p>
-
-
 
 <h3 id="apache-flask-application-container">Apache - Flask Application Container</h3>
 
@@ -379,22 +364,21 @@ The Apache server container and the Postgres container are built from a <a href=
 
 
 
-<h4 id="1-packages-are-updated">1. Packages are updated:</h4>
+<h4 id="1-update-packages">1. Update packages</h4>
 
 <blockquote>
   <p><code>RUN apt-get -y update &amp;&amp; apt-get -y upgrade</code></p>
 </blockquote>
 
-<p></p><ol> <br>
-<li>Flask, Sqlalchemy, psychopg2, apache2 and other prereqs are installed <br></li></ol><p></p>
+
+
+<h4 id="2-install-flask-sqlalchemy-psychopg2-apache2-and-other-prereqs">2. Install Flask, Sqlalchemy, psychopg2, apache2 and other prereqs</h4>
 
 <blockquote>
-  <code>apt-get -y install python-flask python-sqlalchemy &amp;&amp; apt-get -y install python-psycopg2 &amp;&amp; apt-get -y install python-pip &amp;&amp;  apt-get -y install python2.7-dev &amp;&amp; apt-get -y install libjpeg-dev &amp;&amp; apt-get -y install zlib1g-dev &amp;&amp; apt-get -y install apache2 &amp;&amp; apt-get -y install python-setuptools &amp;&amp; apt-get -y install libapache2-mod-wsgi &amp;&amp; pip install pillow &amp;&amp; pip install oauth2client &amp;&amp; pip install dicttoxml</code>
-  
-  </blockquote>
+  <p><code>apt-get -y install python-flask python-sqlalchemy &amp;&amp; apt-get -y install python-psycopg2 &amp;&amp; apt-get -y install python-pip &amp;&amp;  apt-get -y install python2.7-dev &amp;&amp; apt-get -y install libjpeg-dev &amp;&amp; apt-get -y install zlib1g-dev &amp;&amp; apt-get -y install apache2 &amp;&amp; apt-get -y install python-setuptools &amp;&amp; apt-get -y install libapache2-mod-wsgi &amp;&amp; pip install pillow &amp;&amp; pip install oauth2client &amp;&amp; pip install dicttoxml</code></p>
+</blockquote>
 
-
-<h4 id="3-flaskappwsgi-is-coppied-to-application-directory">3. flaskapp.wsgi is coppied  to application directory</h4>
+<h4 id="3-copy-flaskappwsgi-to-application-directory">3. Copy <em>flaskapp.wsgi</em> to application directory</h4>
 
 <blockquote>
   <p><code>ADD flaskapp.wsgi /var/www/FlaskApp/</code></p>
@@ -411,9 +395,7 @@ application.secret_key = <span class="hljs-string">'super_secret_mumbo_jambo'</s
   </blockquote>
 </blockquote>
 
-
-
-<h4 id="4-flaskappconf-is-coppied-to-the-proper-directory">4. FlaskApp.conf is coppied to the proper directory</h4>
+<h4 id="4-copy-flaskappconf-to-the-proper-directory">4. Copy <em>FlaskApp.conf</em> to the proper directory</h4>
 
 <blockquote>
   <p><code>ADD FlaskApp.conf /etc/apache2/sites-available/</code></p>
@@ -442,24 +424,18 @@ application.secret_key = <span class="hljs-string">'super_secret_mumbo_jambo'</s
   </blockquote>
 </blockquote>
 
-
-
-<h4 id="5-the-site-is-enabled-while-the-default-site-is-disabled">5. The site is enabled while the default site is disabled</h4>
+<h4 id="5-the-flask-site-is-enabled-while-the-default-site-is-disabled">5. The flask site is enabled while the default site is disabled</h4>
 
 <blockquote>
   <p><code>RUN a2ensite FlaskApp</code> <br>
   <code>RUN a2dissite 000-default</code></p>
 </blockquote>
 
-
-
-<h3 id="postgres-database-server-container">Postgres Database Server Container</h3>
+<h3 id="postgresql-database-server-container">Postgresql Database Server Container</h3>
 
 <p>Sources: <a href="http://www.postgresonline.com/downloads/special_feature/postgresql83_psql_cheatsheet.pdf">Docker 2</a> <a href="http://www.postgresql.org/docs/9.1/static/server-start.html">postgresql</a></p>
 
-
-
-<h4 id="1-install-postgres-and-update-all-packages">1. Install Postgres and Update all packages</h4>
+<h4 id="1-install-postgresql-and-update-all-packages">1. Install Postgresql and Update all packages</h4>
 
 <blockquote>
   <p><code>RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8</code></p>
@@ -468,8 +444,6 @@ application.secret_key = <span class="hljs-string">'super_secret_mumbo_jambo'</s
   
   <p><code>RUN apt-get update &amp;&amp; apt-get install -y python-software-properties software-properties-common postgresql-9.3 postgresql-client-9.3 postgresql-contrib-9.3</code></p>
 </blockquote>
-
-
 
 <h4 id="2-setup-database">2. Setup database</h4>
 
@@ -593,6 +567,13 @@ application.secret_key = <span class="hljs-string">'super_secret_mumbo_jambo'</s
 </tbody></table>
 
 
+<p>Other Important Resources: <br>
+<a href="https://discussions.udacity.com/t/p5-how-i-got-through-it/15342/8">Udacity Discussions</a>, <a href="https://github.com/stueken/FSND-P5_Linux-Server-Configuration/blob/master/README.md">Github/stueken</a></p>
 
+
+
+<h2 id="license">License</h2>
+
+<p>Apache License Version 2.0, January 2004</p>
 
 <h2 id="footnotes">Footnotes</h2><div class="footnotes"><hr><ol><li id="fn:sed">Sed Resources - <a href="http://stackoverflow.com/questions/4437901/find-and-replace-string-in-a-file">StackOverflow 1</a>, <a href="http://pubs.opengroup.org/onlinepubs/009695399/utilities/sed.html">Opengroup 1</a>, <a href="http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap09.html#tag_09_03">Opengroup 2</a>, <a href="http://www.grymoire.com/Unix/Sed.html#uh-51">Grymoire</a>. <a href="#fnref:sed" title="Return to article" class="reversefootnote">↩</a></li></ol></div>
