@@ -9,7 +9,7 @@ apt-get update
 apt-get upgrade
 
 # let packages auto-update
-apt-get install unattended-upgrades
+apt-get install -y unattended-upgrades
 
 # enable auto-update
 dpkg-reconfigure -plow unattended-upgrades
