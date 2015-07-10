@@ -6,7 +6,7 @@
 
 <p>Script that takes a baseline Linux Server and automates the configuration that secures the system from a number of attack vectors, serves a Postgresql database server and an Apache mod-wsgi server. <br>
 The Postgresql Database Server is configured to run in a <a href="https://www.docker.com"><strong>Docker</strong></a> container that uses a docker data volume for easy migrations, backups and restores. <br>
-Th Apache server is dockerized and linked to the Database Server container for a more secure communication style.</p>
+The Apache server is dockerized and linked to the Database Server container for a more secure communication style.</p>
 
 <p>This repository uses the application from Udacity Full-Stack Nanodegree project 3 (in this case <em><a href="http://www.flutterhub.com/">FlutterHub</a></em>). To demo a working setup. <br>
 <img src="https://raw.githubusercontent.com/robertavram/project5/master/screen_shot.png" alt="enter image description here" title=""></p>
