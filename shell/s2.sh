@@ -1,5 +1,7 @@
 
 # since the rsa key was coppied, make sure not to allow password ssh
+# this is based on the default sshd config file, for the udacity project
+# this will not work since the passAuthentication is already set to no
 word='#PasswordAuthentication[[:space:]]*yes'
 rep='PasswordAuthentication no'
 sed -i "s/${word}/${rep}/g" /etc/ssh/sshd_config

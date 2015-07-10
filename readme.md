@@ -8,6 +8,9 @@
 The Postgresql Database Server is configured to run in a <a href="https://www.docker.com"><strong>Docker</strong></a> container that uses a docker data volume for easy migrations, backups and restores. <br>
 Th Apache server is dockerized and linked to the Database Server container for a more secure communication style.</p>
 
+<p>This repository uses the application from Udacity Full-Stack Nanodegree project 3 (in this case <em><a href="http://www.flutterhub.com/">FlutterHub</a></em>). To demo a working setup. <br>
+<img src="https://raw.githubusercontent.com/robertavram/project5/master/screen_shot.png" alt="enter image description here" title=""></p>
+
 <h2 id="table-of-contents">Table of contents</h2>
 
 <p><div class="toc">
@@ -107,19 +110,16 @@ Th Apache server is dockerized and linked to the Database Server container for a
   <p>$ <code>sudo git clone</code>[your source]  <code>/src</code></p>
 </blockquote>
 
-<h4 id="4-login-as-root-and-run-s1sh-from-the-shell-directory-cyberciti-1">4.  Login as root and run s1.sh from the “shell” directory <a href="http://www.cyberciti.biz/faq/run-execute-sh-shell-script/">Cyberciti 1</a></h4>
+<h4 id="4-login-as-root-and-run-s1sh-from-the-shell-directory-cyberciti-1">4.  Login as root and run s1.sh from the “shell” directory <a href="http://www.cyberciti.biz/faq/run-execute-sh-shell-script/">Cyberciti 1</a>`</h4>
 
 <blockquote>
   <p>$ <code>sudo su</code> <br>
-  $ <code>sudo su</code> <br>
   $ <code>sh /src/shell/s1.sh</code></p>
   
   <blockquote>
     <p><em>here you will be asked to configure unattended-upgrades, timezone, and the password for the new user “grader”</em></p>
   </blockquote>
 </blockquote>
-
-
 
 <h4 id="5-the-ssh-port-is-now-changed-to-2200-exit-to-your-machine-generate-an-rsa-key-and-upload-it-to-the-remote-server-on-port-2200-and-user-grader-digital-ocean-1">5. The ssh port is now changed to 2200, exit to your machine, generate an rsa key and upload it to the remote server on port 2200 and user grader <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2">Digital Ocean 1</a></h4>
 
@@ -567,10 +567,19 @@ application.secret_key = <span class="hljs-string">'super_secret_mumbo_jambo'</s
 </tbody></table>
 
 
+<p>For the udacity project in particular:</p>
+
+<blockquote>
+  <p>The sshd_config file includes the <em>“PasswordAuthentication no”</em> already, this will need to be disabled after running the first script in order to to copy the rsa public key for the user <em>“grader”</em>. Another way to do it is while still logged with root, find a way to copy the public key into <em>/home/grader/.ssh/authorized_keys</em> and chmod to grant “grader” full access to it.</p>
+  
+  <p>Oauth does not work with ip addresses, in order to get oauth to work for google and facebook one needs to use the amazon ec2 hostname for one’s ip. <em>See <a href="https://discussions.udacity.com/t/oauth-provider-callback-uris/20460">Udacity</a> - and - <a href="http://httpd.apache.org/docs/2.2/en/vhosts/name-based.html">Apache</a></em>.</p>
+  
+  <p>The Oauth redirects need to be updated to the new Hostname.</p>
+</blockquote>
+
 <p>Other Important Resources: <br>
-<a href="https://discussions.udacity.com/t/p5-how-i-got-through-it/15342/8">Udacity Discussions</a>, <a href="https://github.com/stueken/FSND-P5_Linux-Server-Configuration/blob/master/README.md">Github/stueken</a></p>
-
-
+<a href="https://discussions.udacity.com/t/p5-how-i-got-through-it/15342/8">Udacity Discussions</a> - Very helpful! <br>
+<a href="https://github.com/stueken/FSND-P5_Linux-Server-Configuration/blob/master/README.md">Github/stueken</a> - A lot of resources were found here!</p>
 
 <h2 id="license">License</h2>
 
