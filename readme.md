@@ -9,6 +9,7 @@ The Postgresql Database Server is configured to run in a <a href="https://www.do
 The Apache server is dockerized and linked to the Database Server container for a more secure communication style.</p>
 
 <p>This repository uses the application from Udacity Full-Stack Nanodegree project 3 (in this case <em><a href="http://www.flutterhub.com/">FlutterHub</a></em>). To demo a working setup. <br>
+<p>The server ip address is: 52.27.185.214, SSH port is: 2200, Full url is: <a href="http://52.27.185.214">http://52.27.185.214</a> or <a href="http://ec2-52-27-185-214.us-west-2.compute.amazonaws.com">http://ec2-52-27-185-214.us-west-2.compute.amazonaws.com</a> </p>
 <img src="https://raw.githubusercontent.com/robertavram/project5/master/screen_shot.png" alt="enter image description here" title=""></p>
 
 <h2 id="table-of-contents">Table of contents</h2>
