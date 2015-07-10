@@ -16,14 +16,15 @@ Th Apache server is dockerized and linked to the Database Server container for a
 <p><div class="toc">
 <ul>
 <li><a href="#linux-server-configuration">Linux Server Configuration</a><ul>
-<li><a href="#linux-apache-flask-postgres-docker-containers">Linux - Apache - Flask - Postgres - Docker Containers</a></li>
+<li><a href="#linux-apache-flask-postgresql-docker-containers">Linux - Apache - Flask - Postgresql - Docker Containers</a></li>
 <li><a href="#table-of-contents">Table of contents</a></li>
 <li><a href="#how-to-use">How to use:</a><ul>
 <li><ul>
 <li><a href="#1-if-not-already-installed-install-openssh-ubuntu-1">1. If not already installed, install openssh Ubuntu 1</a></li>
-<li><a href="#2-install-git">2. Install git:</a></li>
 <li><a href="#3-clone-the-repository-into-src">3. Clone the repository into /src:</a></li>
-<li><a href="#4-login-as-root-and-run-s1sh-from-the-shell-directory-cyberciti-1">4.  Login as root and run s1.sh from the “shell” directory Cyberciti 1</a></li>
+<li><a href="#2-install-git">2. Install git</a></li>
+<li><a href="#3-clone-the-repository-into-src">3. Clone the repository into /src</a></li>
+<li><a href="#4-login-as-root-and-run-s1sh-from-the-shell-directory-cyberciti-1">4.  Login as root and run s1.sh from the “shell” directory Cyberciti 1`</a></li>
 <li><a href="#5-the-ssh-port-is-now-changed-to-2200-exit-to-your-machine-generate-an-rsa-key-and-upload-it-to-the-remote-server-on-port-2200-and-user-grader-digital-ocean-1">5. The ssh port is now changed to 2200, exit to your machine, generate an rsa key and upload it to the remote server on port 2200 and user grader Digital Ocean 1</a></li>
 <li><a href="#6-login-as-root-and-run-the-seccond-script">6.  Login as root and run the seccond script</a></li>
 <li><a href="#7-done-you-should-now-have-a-working-application-everything-set-up">7. DONE! You should now have a working application everything set up.</a></li>
@@ -33,18 +34,19 @@ Th Apache server is dockerized and linked to the Database Server container for a
 </li>
 <li><a href="#user-management">User Management</a><ul>
 <li><ul>
-<li><a href="#1-a-new-user-has-been-created-digital-ocean-2">1. A new user has been created Digital Ocean 2</a></li>
-<li><a href="#2-user-grader-can-sudo-to-root-and-the-password-has-been-set-securely">2. User “grader” can sudo to root and the password has been set securely.</a></li>
-<li><a href="#3-remote-users-other-then-grader-have-been-disabled">3. Remote users other then ‘grader’ have been disabled.</a></li>
+<li><a href="#1-create-a-new-user-digital-ocean-2">1. Create a new user Digital Ocean 2</a></li>
+<li><a href="#2-user-grader-can-sudo-to-root-and-the-password-has-been-set-securely">2. User “grader” can sudo to root and the password has been set securely</a></li>
+<li><a href="#3-disallow-everyone-else-but-grader-from-ssh">3. Disallow everyone else but ‘grader’ from ssh</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><a href="#security-app-functionality-monitoring-feedback">Security / App Functionality Monitoring - Feedback</a><ul>
 <li><ul>
-<li><a href="#1-key-based-ssh-has-been-enforced-unixhelp">1. Key-based ssh has been enforced. UnixHelp</a></li>
-<li><a href="#2-ssh-accessible-over-non-default-port-2200-digital-ocean-3">2. SSH accessible over non-default port 2200. Digital Ocean 3</a></li>
-<li><a href="#4-the-firewall-has-been-configured-to-monitor-for-repeated-unsuccessful-attempts-appropriately-bans-attackers-and-provides-automated-security-feedback-digital-ocean-4">4. The firewall has been configured to monitor for repeated unsuccessful attempts, appropriately bans attackers and provides automated security feedback. Digital Ocean 4</a></li>
+<li><a href="#1-enforce-key-based-ssh-unixhelp">1. Enforce Key-based ssh  UnixHelp</a></li>
+<li><a href="#2-make-ssh-accessible-over-non-default-port-2200digital-ocean-3">2. Make SSH accessible over non-default port 2200Digital Ocean 3</a></li>
+<li><a href="#3-update-applications-to-their-most-recent-updates-recent-updates-askubuntu-2">3. Update applications to their most recent updates recent updates. AskUbuntu 2</a></li>
+<li><a href="#4-configure-the-firewall-to-monitor-for-repeated-unsuccessful-attempts-appropriately-ban-attackers-and-provide-automated-security-feedback-digital-ocean-4">4. Configure the firewall to monitor for repeated unsuccessful attempts, appropriately ban attackers and provide automated security feedback. Digital Ocean 4</a></li>
 </ul>
 </li>
 </ul>
@@ -54,20 +56,22 @@ Th Apache server is dockerized and linked to the Database Server container for a
 <li><ul>
 <li><a href="#1-set-up-firewall-to-only-allow-connections-over-ports-123-2200-and-80-digital-ocean-7">1. Set up firewall to only allow connections over ports 123, 2200 and 80 Digital Ocean 7</a></li>
 <li><a href="#2-install-ntp-for-better-time-synchronization-ntporg">2. Install NTP for better time synchronization ntp.org</a></li>
+<li><a href="#3-install-unattended-packages-and-configure-to-auto-update">3. Install unattended-packages and configure to auto-update</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><a href="#description-of-the-system">Description of the System</a><ul>
 <li><a href="#apache-flask-application-container">Apache - Flask Application Container</a><ul>
-<li><a href="#1-packages-are-updated">1. Packages are updated:</a></li>
-<li><a href="#3-flaskappwsgi-is-coppied-to-application-directory">3. flaskapp.wsgi is coppied  to application directory</a></li>
-<li><a href="#4-flaskappconf-is-coppied-to-the-proper-directory">4. FlaskApp.conf is coppied to the proper directory</a></li>
-<li><a href="#5-the-site-is-enabled-while-the-default-site-is-disabled">5. The site is enabled while the default site is disabled</a></li>
+<li><a href="#1-update-packages">1. Update packages</a></li>
+<li><a href="#2-install-flask-sqlalchemy-psychopg2-apache2-and-other-prereqs">2. Install Flask, Sqlalchemy, psychopg2, apache2 and other prereqs</a></li>
+<li><a href="#3-copy-flaskappwsgi-to-application-directory">3. Copy flaskapp.wsgi to application directory</a></li>
+<li><a href="#4-copy-flaskappconf-to-the-proper-directory">4. Copy FlaskApp.conf to the proper directory</a></li>
+<li><a href="#5-the-flask-site-is-enabled-while-the-default-site-is-disabled">5. The flask site is enabled while the default site is disabled</a></li>
 </ul>
 </li>
-<li><a href="#postgres-database-server-container">Postgres Database Server Container</a><ul>
-<li><a href="#1-install-postgres-and-update-all-packages">1. Install Postgres and Update all packages</a></li>
+<li><a href="#postgresql-database-server-container">Postgresql Database Server Container</a><ul>
+<li><a href="#1-install-postgresql-and-update-all-packages">1. Install Postgresql and Update all packages</a></li>
 <li><a href="#2-setup-database">2. Setup database</a></li>
 </ul>
 </li>
@@ -79,7 +83,9 @@ Th Apache server is dockerized and linked to the Database Server container for a
 </li>
 </ul>
 </li>
-<li><a href="#documents">Documents</a></li>
+<li><a href="#misc">Misc</a></li>
+<li><a href="#license">License</a></li>
+<li><a href="#footnotes">Footnotes</a></li>
 </ul>
 </li>
 </ul>
