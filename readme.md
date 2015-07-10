@@ -21,7 +21,6 @@ Th Apache server is dockerized and linked to the Database Server container for a
 <li><a href="#how-to-use">How to use:</a><ul>
 <li><ul>
 <li><a href="#1-if-not-already-installed-install-openssh-ubuntu-1">1. If not already installed, install openssh Ubuntu 1</a></li>
-<li><a href="#3-clone-the-repository-into-src">3. Clone the repository into /src:</a></li>
 <li><a href="#2-install-git">2. Install git</a></li>
 <li><a href="#3-clone-the-repository-into-src">3. Clone the repository into /src</a></li>
 <li><a href="#4-login-as-root-and-run-s1sh-from-the-shell-directory-cyberciti-1">4.  Login as root and run s1.sh from the “shell” directory Cyberciti 1`</a></li>
