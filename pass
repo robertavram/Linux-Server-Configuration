@@ -1,0 +1,18 @@
+graderpass
+
+run ssh-keygen on your machine
+ssh-copy-id -p 2200 -i /users/username/.ssh/udacity.rsa grader@ip
+ssh -p 2200 -i /users/username/.ssh/udacity.rsa grader@ip
+
+things to note:
+
+sshd already set for no password
+remember to enable hostname in config
+update redirects for oauth
+update redirectlink in secret_keys.py
+
+add the fact that project 3 is included and the application is actually running in it.
+
+add screenshot
+
+make sure Documents are gone from TOC
