@@ -4,7 +4,7 @@ Jinja2==2.7.2
 Landscape-Client==14.12
 MarkupSafe==0.18
 PAM==0.4.2
-Pillow==2.8.1
+Pillow==8.1.1
 PyYAML==3.10
 SQLAlchemy==0.8.4
 SecretStorage==2.0.0
