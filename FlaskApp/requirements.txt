@@ -5,7 +5,7 @@ Landscape-Client==14.12
 MarkupSafe==0.18
 PAM==0.4.2
 Pillow==2.8.1
-PyYAML==3.10
+PyYAML==5.4
 SQLAlchemy==0.8.4
 SecretStorage==2.0.0
 Twisted-Core==13.2.0
