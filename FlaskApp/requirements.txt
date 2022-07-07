@@ -44,7 +44,7 @@ pyinotify==0.9.4
 pyserial==2.6
 python-apt==0.9.3.5ubuntu1
 python-debian==0.1.21-nmu2ubuntu2
-requests==2.2.1
+requests==2.20.0
 rsa==3.1.4
 simplejson==3.3.1
 six==1.9.0
